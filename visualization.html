@@ -7,8 +7,27 @@
     <title>Elevator Control System</title>
     <script type="module" src="js/script.js"></script>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/toolbox.css">
 </head>
 <body>
+    <div class="background"></div>
+    <div class="toolbox-container">
+      <i class="bi bi-tools toolbox-icon"></i>
+      <div class="toolbox-content">
+        <div class="slider-container">
+          <label for="elevators">Number of elevators: <span id="elevators-value">1</span></label>
+          <input type="range" min="1" max="16" value="1" class="slider" id="elevators">
+        </div>
+        <div class="slider-container">
+          <label for="floors">Number of floors: <span id="floors-value">2</span></label>
+          <input type="range" min="2" max="10" value="2" class="slider" id="floors">
+        </div>
+        <div class="slider-container">
+          <label for="scale">Scale: <span id="scale-value">50%</span></label>
+          <input type="range" min="50" max="150" value="50" class="slider" id="scale">
+        </div>
+      </div>
+    </div>
     <div id="container">
       <div id="pickup-panel-container"></div>
       <div id="elevators-container"></div>

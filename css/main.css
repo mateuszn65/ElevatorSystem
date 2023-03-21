@@ -1,6 +1,6 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
 
-:root{
+:root {
     --floor-count: 3;
     --num-elevators: 3;
     --scale: 1;
@@ -13,30 +13,44 @@
     --delay: 1s;
 }
 
-*, *:before, *:after{
+*,
+*:before,
+*:after {
     box-sizing: border-box;
 }
-body{
+
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.5) 100%);
+    z-index: -1;
+}
+
+body {
     margin: 0;
     padding-top: 10px;
     font-family: sans-serif;
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 100%);
     width: 100vw;
     min-height: 100vh;
 }
-#container{
+
+#container {
     display: flex;
     width: fit-content;
     margin-inline: auto;
 }
 
-#pickup-panel-container{
+#pickup-panel-container {
     background-color: hsla(var(--yellow-light), 0.5);
     width: var(--elevator-width);
     margin-inline: 5px;
 }
 
-#pickup-panel{
+#pickup-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,21 +59,22 @@ body{
     border: 1px solid black;
 }
 
-#elevators-container{
+#elevators-container {
     display: flex;
     height: calc(var(--floor-height) * var(--floor-count));
 }
 
-.elevator-shaft{
+.elevator-shaft {
     margin-inline: 5px;
     height: calc(var(--floor-height) * var(--floor-count));
     width: var(--elevator-width);
     border: 1px solid black;
-    background-color: hsla(var(--yellow-light), 0.3);;
+    background-color: hsla(var(--yellow-light), 0.3);
+    ;
     position: relative;
 }
 
-.elevator{
+.elevator {
     --current-floor: 0;
     position: absolute;
     bottom: 0;
@@ -73,7 +88,7 @@ body{
 }
 
 .elevator::after,
-.elevator::before{
+.elevator::before {
     content: "";
     position: absolute;
     height: 100%;
@@ -83,29 +98,30 @@ body{
     border: 1px solid hsla(var(--blue), .2);
 }
 
-.elevator::after{
+.elevator::after {
     right: 0;
 }
 
-.elevator.door-open::before{
+.elevator.door-open::before {
     transform: translateX(-90%);
 }
 
-.elevator.door-open::after{
+.elevator.door-open::after {
     transform: translateX(90%);
 }
 
-#target-panel{
+#target-panel {
     width: var(--elevator-width);
     position: absolute;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
     bottom: -5px;
     transform: translateY(100%);
+    padding-bottom: 1rem;
 }
 
-.floor-btn{
+.floor-btn {
     background-color: hsla(var(--blue), .3);
     color: white;
     border-radius: 100vw;
@@ -114,12 +130,15 @@ body{
     cursor: pointer;
     text-align: center;
     border: 1px solid hsl(var(--blue));
-}
-.floor-btn:hover{
-    background-color: hsla(var(--blue), 1);;
+    transition: background-color 0.3s;
 }
 
-.floor-indicator{
+.floor-btn:hover,
+.floor-btn.active {
+    background-color: hsla(var(--blue), 1);
+}
+
+.floor-indicator {
     height: var(--floor-height);
     border: 1px solid rgba(0, 0, 0, 0.4);
 }
@@ -133,7 +152,7 @@ body{
     color: hsla(var(--blue), 1)
 }
 
-#pickup-floor{
+#pickup-floor {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;

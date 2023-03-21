@@ -1,0 +1,36 @@
+.toolbox-container {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.toolbox-icon {
+    cursor: pointer;
+    padding: .3rem;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.toolbox-content {
+    display: none;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+.toolbox-content.active {
+    display: block;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.slider {
+    margin: 5px 0;
+    cursor: pointer;
+}
