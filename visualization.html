@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevator Control System</title>
+    <script type="module" src="js/script.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="container">
+      <div id="pickup-panel-container"></div>
+      <div id="elevators-container"></div>
+    </div>
+
+    <template id="pickup-panel-template">
+      <div id="pickup-panel">
+        <div id="pickup-floor"></div>
+        <i class="bi bi-caret-up-square" id="pickup-up"></i>
+        <i class="bi bi-caret-down-square" id="pickup-down"></i>
+      </div>
+    </template>
+
+    <template id="elevator-shaft-template">
+      <div class="elevator-shaft">
+        <div class="elevator">
+          
+        </div>
+        <div id="target-panel"></div>
+      </div>
+    </template>
+    
+</body>
+</html>

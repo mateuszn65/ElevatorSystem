@@ -1,0 +1,140 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
+
+:root{
+    --floor-count: 3;
+    --num-elevators: 3;
+    --scale: 1;
+    --elevator-width: calc(60px * var(--scale));
+    --elevator-height: calc(100px * var(--scale));
+    --floor-height: calc(150px * var(--scale));
+    --target-panel-button-size: calc(20px * var(--scale));
+    --yellow-light: 60, 100%, 40%;
+    --blue: 220, 100%, 50%;
+    --delay: 1s;
+}
+
+*, *:before, *:after{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    padding-top: 10px;
+    font-family: sans-serif;
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 100%);
+    width: 100vw;
+    min-height: 100vh;
+}
+#container{
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
+}
+
+#pickup-panel-container{
+    background-color: hsla(var(--yellow-light), 0.5);
+    width: var(--elevator-width);
+    margin-inline: 5px;
+}
+
+#pickup-panel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: var(--floor-height);
+    border: 1px solid black;
+}
+
+#elevators-container{
+    display: flex;
+    height: calc(var(--floor-height) * var(--floor-count));
+}
+
+.elevator-shaft{
+    margin-inline: 5px;
+    height: calc(var(--floor-height) * var(--floor-count));
+    width: var(--elevator-width);
+    border: 1px solid black;
+    background-color: hsla(var(--yellow-light), 0.3);;
+    position: relative;
+}
+
+.elevator{
+    --current-floor: 0;
+    position: absolute;
+    bottom: 0;
+    height: var(--elevator-height);
+    width: 100%;
+    margin: calc((var(--floor-height) - var(--elevator-height))*0.5) 0;
+    background-color: hsla(var(--blue));
+    transform: translateY(calc(var(--floor-height) * var(--current-floor) * -1));
+    transition: transform var(--delay) linear;
+    overflow: hidden;
+}
+
+.elevator::after,
+.elevator::before{
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: transform var(--delay) linear;
+    border: 1px solid hsla(var(--blue), .2);
+}
+
+.elevator::after{
+    right: 0;
+}
+
+.elevator.door-open::before{
+    transform: translateX(-90%);
+}
+
+.elevator.door-open::after{
+    transform: translateX(90%);
+}
+
+#target-panel{
+    width: var(--elevator-width);
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    bottom: -5px;
+    transform: translateY(100%);
+}
+
+.floor-btn{
+    background-color: hsla(var(--blue), .3);
+    color: white;
+    border-radius: 100vw;
+    padding: 0.25rem;
+    user-select: none;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid hsl(var(--blue));
+}
+.floor-btn:hover{
+    background-color: hsla(var(--blue), 1);;
+}
+
+.floor-indicator{
+    height: var(--floor-height);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+#pickup-panel i {
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+#pickup-panel i:hover {
+    color: hsla(var(--blue), 1)
+}
+
+#pickup-floor{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
