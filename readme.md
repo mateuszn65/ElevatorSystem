@@ -2,12 +2,12 @@
 
 ## Concept and Design
 
-First I've noticed there are two main problems to solve:
+###### I've identified two main problems to solve in the elevator system:
 
-- Decide which elevator to send to a floor when a pickup request is made
-- Decide which floor to go to when there are multiple requests from within the elevator
+1. Decide which elevator to send to a floor when a pickup request is made
+2. Decide which floor to go to when there are multiple requests from within the elevator
 
-Let's start with the second problem.
+###### Let's start with the second problem.
 There are two basic approaches to this problem:
 
 - First come first serve - This is simple but not efficient in terms of time and energy
@@ -15,10 +15,23 @@ There are two basic approaches to this problem:
 
 Since people can specify the direction they want to go in, before entering the elevator we can modify the second approach by adding a direction factor to it so that the elevator will first fulfill the requests in the same direction as it is currently going and then the requests in the opposite direction.
 
-Now let's look at the first problem.
-If we were to assume that the pickup requests are equivalent to requests from within the elevator, then we can use the same approach to solve both problems.
 
-  However, that would allow for a situation where elevator is going down so we can add a pickup request from below to go down, but before it reaches our floor people leave the elevator and someone seeing empty elevator will surely enter it instead of waiting for another one and might want to go the opposite direction. Now from that person's point of view, the elevator is going the wrong way and he/she will spend more time inside the elevator than necessary.
+###### Now let's look at the first problem.
+I believe that requests from within the elevator should be prioritized over requests from outside the elevator. This is because people inside the elevator are already in the elevator and are more likely to be in a hurry than people who are waiting outside the elevator. So we can add a second queue for pickup requests that is checked after the first queue is empty or when the floor is the same as in the first queue.
 
-Because of this I think it's better to have a separate system for pickup requests.
-If we know that the elevator will pass by our floor on it's way then we can use it for the pickup request in the same direction. Otherwise we have to use one that is not moving. We can prioritize the closest pickup requests. Additionally, we could give a higher priority to requests that have been waiting for a longer time. 
+
+## Implementation
+I've implemented the solution using JavaScript and created an interactive ***demo*** to test it out. The actual implementation can be found in the `js/Elevator` folder.
+
+
+## Installation
+To open the HTML files, you need to run a local server. I've used the LiveServer Extension for VS Code, but you can use any other server.
+For example, you can use `http-server`. The `-g` flag means global, so you can run it from anywhere.
+```
+npm install http-server -g
+```
+Then you can run it in the root folder of the project:
+```
+http-server -o
+```
+Flag `-o` will open the demo in your browser at `http://localhost:8080/`
