@@ -1,7 +1,9 @@
 const Direction = {
-    UP: 1,
-    DOWN: -1,
-    IDLE: 0
+    UP: "up",
+    DOWN: "down",
+    IDLE: "idle",
+    PICKUP_UP: "pickup_up",
+    PICKUP_DOWN: "pickup_down"
 }
 
 export default Direction;

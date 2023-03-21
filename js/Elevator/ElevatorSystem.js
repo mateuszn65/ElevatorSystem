@@ -1,13 +1,13 @@
-import Elevator  from "./Elevator";
+import Elevator  from "./Elevator.js";
 import Direction from "./ElevatorDirection.js";
 
 class ElevatorSystem {
-    constructor(numElevators, floorCount) {
+    constructor(numElevators, floorCount, delay = 1000) {
         this.floorCount = floorCount;
         this.elevators = [];
-
+        this.pickupRequests = [];
         for (let i = 0; i < numElevators; i++) {
-            this.#addElevator(new Elevator(i, floorCount));
+            this.#addElevator(new Elevator(i, floorCount, delay));
         }
     }
 
@@ -15,48 +15,66 @@ class ElevatorSystem {
         this.elevators.push(elevator);
     }
 
-    #findBestElevator(floor, direction) {
+    #checkForComingElevator(floor, direction) {
         let bestElevator = null;
-        let bestScore = 0;
-
-        this.elevators.forEach(e => {
-            const score = this.getElevatorScore(e, floor, direction);
-            if (score > bestScore) {
-                bestElevator = e;
-                bestScore = score;
+        let minDistance = this.floorCount;
+        for (const e of this.elevators) {
+            if (e.direction === direction) {
+                const distance = Math.abs(e.currentFloor - floor);
+                if (e.isGoingPassFloor(floor)){
+                    if (distance < minDistance) {
+                        bestElevator = e;
+                        minDistance = distance;
+                    }
+                }
             }
-        });
-
+        }
         return bestElevator;
     }
 
+    #getClosestFreeElevator(floor) {
+        let bestElevator = null;
+        let minDistance = this.floorCount;
+        for (const e of this.elevators) {
+            if (e.direction === Direction.IDLE) {
+                const distance = e.distanceToFloor(floor);
+                if (distance < minDistance) {
+                    bestElevator = e;
+                    minDistance = distance;
+                }
+            }
+        }
+        return bestElevator;
+    }
+    
     pickup(floor, direction) {
+        
         if (floor < 0 || floor > this.floorCount)
             return;
         
         if ([Direction.UP, Direction.DOWN].includes(direction) === false)
             return;
         
-        let chosenElevator = null;
+        let pickupRequest = this.pickupRequests.find(p => p.floor === floor && p.direction === direction);
 
-        for (const e of this.elevators) {
-            if (e.direction === direction) {
-                if (direction === Direction.UP && floor <= Math.max(e.targetFloorsAbove(e.currentFloor))) {
-                    e.addPickupFloor(floor);
-                    chosenElevator = e;
-                    return;
-                }
-                if (direction === Direction.DOWN && floor >= Math.min(e.targetFloorsBelow(e.currentFloor))) {
-                    e.addPickupFloor(floor);
-                    chosenElevator = e;
-                    return;
-                }
-            }
+        if (pickupRequest !== undefined && pickupRequest.elevatorId !== null)
+            return;
+
+        if (pickupRequest === undefined){
+            pickupRequest = {floor, direction, elevatorId: null}
+            this.pickupRequests.push(pickupRequest);
         }
 
+        let chosenElevator = this.#checkForComingElevator(floor, direction);
+
         if (chosenElevator === null) {
-            chosenElevator = this.#findBestElevator(floor, direction);
+            chosenElevator = this.#getClosestFreeElevator(floor);
+        }
+
+        if (chosenElevator !== null) {
             chosenElevator.addPickupFloor(floor);
+            pickupRequest.elevatorId = chosenElevator.id;
+            return
         }
     }
 
@@ -67,6 +85,14 @@ class ElevatorSystem {
 
     step(){
         this.elevators.forEach(e => e.update());
+        this.pickupRequests = this.pickupRequests.filter(p => {
+            if (p.elevatorId === null){
+                this.pickup(p.floor, p.direction);
+                return true;
+            }
+            const elevator = this.elevators[p.elevatorId];
+            return elevator.currentFloor !== p.floor || !elevator.doorClosed;
+        });
     }
 
     status(){
@@ -75,12 +101,13 @@ class ElevatorSystem {
                 id: e.id,
                 currentFloor: e.currentFloor,
                 direction: e.direction,
-                targetFloors: e.targetFloors
+                targetFloors: e.targetFloors,
+                pickupFloors: e.pickupFloors,
+                doorOpen: e.doorOpen
             }
         });
-
         return status;
     }
-
-
 }
+
+export default ElevatorSystem;
