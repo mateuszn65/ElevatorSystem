@@ -1,6 +1,6 @@
 import ElevatorSystem from './Elevator/ElevatorSystem.js';
 
-const elevatorSystem = new ElevatorSystem(2, 4);
+const elevatorSystem = new ElevatorSystem(3, 4);
 const output = document.getElementById('output');
 
 const pickupButton = document.getElementById('pickup-btn');
@@ -16,17 +16,15 @@ statusButton.addEventListener('click', getStatus);
 function pickup() {
   const floor = parseInt(document.getElementById('pickup-floor').value);
   const direction = document.getElementById('pickup-direction').value;
-  console.log(floor, direction);
   elevatorSystem.pickup(floor, direction);
   output.textContent = `Pickup request at floor ${floor} with direction ${direction}`;
 }
 
 function update() {
   const elevatorId = parseInt(document.getElementById('update-elevator').value);
-  const currentFloor = parseInt(document.getElementById('update-floor').value);
   const targetFloor = parseInt(document.getElementById('update-target').value);
-  elevatorSystem.update(elevatorId, currentFloor, targetFloor);
-  output.textContent = `Update elevator ${elevatorId} to current floor ${currentFloor} and target floor ${targetFloor}`;
+  elevatorSystem.addTargetFloor(elevatorId, targetFloor);
+  output.textContent = `Update elevator ${elevatorId} target floor ${targetFloor}`;
 }
 
 function step() {
